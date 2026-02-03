@@ -9,11 +9,12 @@
 # 4. IMPLEMENT COMPUTER ALGORITHM WITH OPTIMAL MASTERMIND STRATEGY
 
 require_relative 'player'
-require_relative 'computer'
+require_relative 'human_player'
+require_relative 'computer_player'
 require_relative 'game'
 
-player = Mastermind::Player.new
-computer = Mastermind::Computer.new
+player = Mastermind::HumanPlayer.new
+computer = Mastermind::ComputerPlayer.new
 game = Mastermind::Game.new(player, computer)
 
 game.play

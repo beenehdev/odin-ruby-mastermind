@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
+require_relative 'player'
+
 module Mastermind
   # Ancestor class for human_player and computer_player
-  class Player
+  class HumanPlayer < Mastermind::Player
     attr_reader
 
-    def initialize(value)
-      @value = value
-      @code = nil
+    def initialize(value, foo)
+      super(value)
+      @foo = foo
     end
 
     def make_code
