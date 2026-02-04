@@ -9,6 +9,7 @@ module Mastermind
 
     def initialize(value, foo)
       super(value)
+      super(@code)
       @foo = foo
     end
 
