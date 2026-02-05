@@ -14,7 +14,11 @@ module Mastermind
     end
 
     def make_code
-      raise NotImplementedError
+      code = Array.New(4)
+
+      4.times { code << rand(1..6) }
+
+      @code = code
     end
 
     def guess_code
