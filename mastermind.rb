@@ -17,4 +17,4 @@ player = Mastermind::HumanPlayer.new
 computer = Mastermind::ComputerPlayer.new
 game = Mastermind::Game.new(player, computer, interactive: false)
 
-game.play
+game.start
