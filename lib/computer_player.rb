@@ -5,24 +5,16 @@ require_relative 'player'
 module Mastermind
   #
   class ComputerPlayer < Mastermind::Player
-    attr_reader
-
-    def initialize(value, foo)
-      super(value)
-      super(@code)
-      @foo = foo
-    end
-
     def make_code
-      code = Array.New(4)
+      result = []
+      4.times { result << rand(1..6) }
 
-      4.times { code << rand(1..6) }
-
-      @code = code
+      result
     end
 
     def guess_code
       raise NotImplementedError
+      # Donald Knuth 5 or less minimax algorithm attempt
     end
   end
 end

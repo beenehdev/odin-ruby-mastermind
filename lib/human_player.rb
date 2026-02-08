@@ -3,21 +3,39 @@
 require_relative 'player'
 
 module Mastermind
-  # Ancestor class for human_player and computer_player
+  #
   class HumanPlayer < Mastermind::Player
-    attr_reader
-
-    def initialize(value, foo)
-      super(value)
-      @foo = foo
-    end
-
     def make_code
-      raise NotImplementedError
+      result = []
+      puts 'Make a code:'
+      puts 'Enter a 4 digit code of numbers between 1-6. Example: 1266'
+      loop do
+        result = parse_input
+        return result if valid_input?(result)
+
+        puts 'Invalid input:'
+      end
     end
 
     def guess_code
-      raise NotImplementedError
+      result = []
+      puts 'Time to guess!'
+      puts 'Enter a 4 digit code of numbers between 1-6. Example: 1266'
+      loop do
+        result = parse_input
+        return result if valid_input?(result)
+
+        puts 'Invalid input:'
+      end
+    end
+
+    def parse_input
+      gets.strip.chars.map(&:to_i)
+    end
+
+    def valid_input?(result)
+      result.length == 4 &&
+        result.all? { |value| value.is_a?(Integer) && (1..6).include?(value) }
     end
   end
 end

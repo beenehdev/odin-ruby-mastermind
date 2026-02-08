@@ -3,13 +3,6 @@
 module Mastermind
   # Ancestor class for human_player and computer_player
   class Player
-    attr_reader
-
-    def initialize(value)
-      @value = value
-      @code = nil
-    end
-
     def make_code
       raise NotImplementedError
     end
