@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'player'
+require_relative './player'
 
 module Mastermind
   #
-  class HumanPlayer < Mastermind::Player
+  class HumanPlayer < Player
     def make_code
       result = []
       puts 'Make a code:'
@@ -27,6 +27,10 @@ module Mastermind
 
         puts 'Invalid input:'
       end
+    end
+
+    def store_feedback
+      raise NotImplementedError
     end
 
     def parse_input

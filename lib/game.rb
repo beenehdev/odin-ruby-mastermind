@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'evaluator'
+require_relative './evaluator'
 
 module Mastermind
   # Main logic of game-handling
@@ -10,8 +10,6 @@ module Mastermind
     def initialize(player1, player2, interactive: false)
       @evaluator = Mastermind::Evaluator.new
       @guesses = []
-      @exact_matches = []
-      @color_matches = []
       @rounds = 8
 
       @player1 = player1
@@ -45,20 +43,20 @@ module Mastermind
 
       loop do
         puts "Please select who will be the codebreaker, 1 for #{player1} or 2 for #{player2}."
-        selection = gets.trim.to_i
+        selection = gets.strip.to_i
 
         valid = @evaluator.validate_roles(selection)
         assign_roles(selection, player1, player2)
-        break if valid
+        return if valid
 
-        warns 'Invalid Input.'
+        warns 'Invalid Input:'
       end
     end
 
     def start
       puts "#{@code_breaker} will be codebreaker, and #{@code_maker} will be mastermind."
       puts 'Is this correct? Y/N.'
-      confirm = gets.trim.downcase
+      confirm = gets.strip.downcase
       confirm == 'y' ? play : select_roles(@player1, @player2)
     end
 
@@ -71,9 +69,19 @@ module Mastermind
 
         game_end && break if @evaluator.win?(latest_guess, code)
 
-        @exact_matches = ''
-        @color_matches = ''
+        guess_feedback(latest_guess, code)
       end
+    end
+
+    def guess_feedback(latest_guess, code)
+      exact_matches = @evaluator.exact_matches(code, latest_guess)
+      imperfect_matches = @evaluator.imperfect_matches
+
+      @code_breaker.save_feedback(exact_matches, imperfect_matches)
+    end
+
+    def game_end
+      puts 'This is where the game STOPS!'
     end
   end
 end

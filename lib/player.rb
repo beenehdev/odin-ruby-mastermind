@@ -10,5 +10,9 @@ module Mastermind
     def guess_code
       raise NotImplementedError
     end
+
+    def store_feedback
+      raise NotImplementedError
+    end
   end
 end

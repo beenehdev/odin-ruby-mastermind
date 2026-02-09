@@ -8,10 +8,10 @@
 # 3. ADD COMPUTER ALOGIRTHM FOR GUESSING
 # 4. IMPLEMENT COMPUTER ALGORITHM WITH OPTIMAL MASTERMIND STRATEGY
 
-require_relative 'player'
-require_relative 'human_player'
-require_relative 'computer_player'
-require_relative 'game'
+require_relative 'lib/player'
+require_relative 'lib/human_player'
+require_relative 'lib/computer_player'
+require_relative 'lib/game'
 
 player = Mastermind::HumanPlayer.new
 computer = Mastermind::ComputerPlayer.new
