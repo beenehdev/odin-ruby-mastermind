@@ -5,6 +5,17 @@ require_relative './player'
 module Mastermind
   #
   class HumanPlayer < Player
+    def store_feedback(exact_matches, imperfect_matches)
+      @black_pegs << exact_matches
+      @white_pegs << imperfect_matches
+
+      print_feedback(exact_matches, imperfect_matches)
+    end
+
+    def print_feedback(exact_matches, imperfect_matches)
+      puts "Your guess had #{exact_matches} exact matches and #{imperfect_matches} imperfect matches."
+    end
+
     def make_code
       result = []
       puts 'Make a code:'
@@ -27,10 +38,6 @@ module Mastermind
 
         puts 'Invalid input:'
       end
-    end
-
-    def store_feedback
-      raise NotImplementedError
     end
 
     def parse_input

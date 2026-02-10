@@ -70,6 +70,8 @@ module Mastermind
         game_end && break if @evaluator.win?(latest_guess, code)
 
         guess_feedback(latest_guess, code)
+
+        draw_game && break if round_num == @rounds
       end
     end
 
