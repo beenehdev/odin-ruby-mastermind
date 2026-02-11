@@ -9,7 +9,6 @@ module Mastermind
 
     def initialize(player1, player2, interactive: false)
       @evaluator = Mastermind::Evaluator.new
-      @guesses = []
       @rounds = 8
 
       @player1 = player1
@@ -70,12 +69,14 @@ module Mastermind
       @code_breaker.store_feedback(exact_matches, imperfect_matches)
     end
 
-    def codebreaker_win
+    def codebreaker_win(code)
       puts 'This is where the game STOPS! The codebreaker won!'
+      puts "The code was #{code}"
     end
 
-    def mastermind_win
+    def mastermind_win(code)
       puts 'This is where the game STOPS! The mastermind won!'
+      puts "The code was #{code}"
     end
 
     def play
@@ -83,15 +84,14 @@ module Mastermind
 
       1.upto(@rounds) do |round_num|
         guess = @code_breaker.guess_code
-        @guesses << guess
 
         if @evaluator.win?(code, guess)
-          codebreaker_win
+          codebreaker_win(code)
           break
         end
 
         if round_num == @rounds
-          mastermind_win
+          mastermind_win(code)
           break
         end
 

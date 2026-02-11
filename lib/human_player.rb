@@ -6,9 +6,6 @@ module Mastermind
   #
   class HumanPlayer < Player
     def store_feedback(exact_matches, imperfect_matches)
-      @black_pegs << exact_matches
-      @white_pegs << imperfect_matches
-
       print_feedback(exact_matches, imperfect_matches)
     end
 
