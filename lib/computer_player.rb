@@ -8,7 +8,7 @@ module Mastermind
   class ComputerPlayer < Player
     def initialize
       super
-
+      @evaluator = Mastermind::Evaluator.new
       possibilities = (1..6).to_a.repeated_permutation(4).to_a
       @all_answers = possibilities
       @all_guesses = possibilities.dup
@@ -21,13 +21,6 @@ module Mastermind
       @white_pegs = imperfect_matches
     end
 
-    def algorithmic_feedback(guess, code)
-      [
-        Evaluator.exact_matches(guess, code),
-        Evaluator.imperfect_matches(guess, code)
-      ]
-    end
-
     def make_code
       result = []
       4.times { result << rand(1..6) }
@@ -38,10 +31,12 @@ module Mastermind
     def score_guess(guess, possible_answers)
       response_groups = Hash.new(0)
 
-      possible_answers.each do |secret|
-        response = feedback(guess, secret)
+      possible_answers.each do |code|
+        response = @evaluator.match_feedback(code, guess)
         response_groups[response] += 1
       end
+
+      response_groups.values.max
     end
 
     def choose_best_guess
@@ -65,15 +60,19 @@ module Mastermind
       # Donald Knuth 5 or less minimax algorithm attempt
       if @guess_num.zero?
         @guess_num += 1
+        @guess = [1, 1, 2, 2]
+        puts "The computer guesses: #{@guess}"
         return @guess = [1, 1, 2, 2]
       end
 
       @all_answers.select! do |possible_code|
-        algorithmic_feedback(@guess, possible_code) == [@black_pegs, @white_pegs]
+        @evaluator.match_feedback(possible_code, @guess) == [@black_pegs, @white_pegs]
       end
 
       @guess = choose_best_guess
       @guess_num += 1
+
+      puts "The computer guesses: #{@guess}"
       @guess
     end
   end

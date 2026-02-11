@@ -45,9 +45,12 @@ module Mastermind
         puts "Please select who will be the codebreaker, 1 for #{player1} or 2 for #{player2}."
         selection = gets.strip.to_i
 
-        valid = @evaluator.validate_roles(selection)
+        valid = @evaluator.valid_role?(selection)
         assign_roles(selection, player1, player2)
-        return if valid
+        if valid
+          start
+          return
+        end
 
         warns 'Invalid Input:'
       end
@@ -56,34 +59,44 @@ module Mastermind
     def start
       puts "#{@code_breaker} will be codebreaker, and #{@code_maker} will be mastermind."
       puts 'Is this correct? Y/N.'
+
       confirm = gets.strip.downcase
       confirm == 'y' ? play : select_roles(@player1, @player2)
+    end
+
+    def guess_feedback(code, guess)
+      exact_matches, imperfect_matches = @evaluator.match_feedback(code, guess)
+
+      @code_breaker.store_feedback(exact_matches, imperfect_matches)
+    end
+
+    def codebreaker_win
+      puts 'This is where the game STOPS! The codebreaker won!'
+    end
+
+    def mastermind_win
+      puts 'This is where the game STOPS! The mastermind won!'
     end
 
     def play
       code = @code_maker.make_code
 
       1.upto(@rounds) do |round_num|
-        latest_guess = @code_breaker.guess_code
-        @guesses << latest_guess
+        guess = @code_breaker.guess_code
+        @guesses << guess
 
-        game_end && break if @evaluator.win?(latest_guess, code)
+        if @evaluator.win?(code, guess)
+          codebreaker_win
+          break
+        end
 
-        guess_feedback(latest_guess, code)
+        if round_num == @rounds
+          mastermind_win
+          break
+        end
 
-        draw_game && break if round_num == @rounds
+        guess_feedback(code, guess)
       end
-    end
-
-    def guess_feedback(latest_guess, code)
-      exact_matches = @evaluator.exact_matches(code, latest_guess)
-      imperfect_matches = @evaluator.imperfect_matches
-
-      @code_breaker.save_feedback(exact_matches, imperfect_matches)
-    end
-
-    def game_end
-      puts 'This is where the game STOPS!'
     end
   end
 end
